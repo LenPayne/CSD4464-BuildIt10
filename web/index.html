@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://code.jquery.com/jquery.min.js"></script>
+        <script>
+            function getName() {
+                $.getJSON('r/beans', function (data) {
+                    if (typeof data.name !== 'undefined' && data.name !== '') {
+                        $('#name').html(data.name);
+                        $('#nameInput').val(data.name);
+                    }
+                    else
+                        $('#name').html('World');
+                });
+            }
+
+            $(document).ready(function () {
+                getName();
+
+                $('#login').click(function () {
+                    $.ajax({
+                        url: 'r/beans',
+                        method: 'post',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            name: $('#nameInput').val()
+                        }),
+                        success: getName
+                    })
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Hello <span id="name"></span></h1>
+        <p>Name: <input id="nameInput" /><button id="login">Login</button></p>
+        <p>Instructions: Input your name and press "Login" to register your name
+            with the session. When you refresh this page, or navigate away and
+            come back, your name should reappear above.</p>
+    </body>
+</html>
